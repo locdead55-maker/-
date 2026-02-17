@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestie, Paise De Do! 🥺</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+@font-face {
+    font-family: 'MyCuteFont';
+    src: url('myfont.ttf');
+}
+
+:root {
+--purple-white: linear-gradient(135deg,#f3e5f5,#ffffff);
+}
+
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:'MyCuteFont',sans-serif;
+overflow:hidden;
+background:var(--purple-white);
+transition:0.5s ease;
+}
+
+/* Floating Stickers */
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0px);}
+}
+
+.sticker{
+position:absolute;
+width:100px;
+opacity:0.5;
+animation:float 6s infinite ease-in-out;
+pointer-events:none;
+z-index:0;
+}
+
+.container{
+background:rgba(255,255,255,0.96);
+padding:30px;
+border-radius:40px;
+box-shadow:0 25px 50px rgba(0,0,0,0.15);
+width:350px;
+text-align:center;
+position:relative;
+z-index:2;
+overflow:hidden;
+}
+
+.page{display:none;}
+.active{display:block;animation:pop 0.5s ease;}
+
+@keyframes pop{
+from{opacity:0;transform:scale(0.6);}
+to{opacity:1;transform:scale(1);}
+}
+
+.gif-box{
+width:100%;
+height:200px;
+border-radius:25px;
+margin-bottom:20px;
+overflow:hidden;
+background:#fdf2f2;
+}
+
+img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+h1{color:#6a1b9a;font-size:22px;}
+p{font-size:16px;color:#444;}
+
+button{
+background:#8e44ad;
+color:white;
+border:none;
+padding:14px;
+border-radius:50px;
+font-size:16px;
+cursor:pointer;
+width:100%;
+margin-top:10px;
+position:relative;
+font-weight:bold;
+}
+
+button:hover{transform:scale(1.05);}
+
+.danger{background:#ff4d6d;}
+
+.qr-frame{
+border:4px dashed #ff4d6d;
+padding:10px;
+border-radius:20px;
+background:white;
+margin:15px 0;
+}
+
+/* ✅ QR Page Text Bold */
+.qr-frame + p{
+    font-weight: bold;
+    font-size: 17px;
+}
+</style>
+</head>
+
+<body>
+
+<img src="sticker1.png" class="sticker" style="top:5%;left:5%;">
+<img src="sticker2.png" class="sticker" style="bottom:5%;right:5%;">
+
+<audio id="bgMusic" src="bgmusic.mp3" loop></audio>
+<audio id="clickSnd" src="click.mp3"></audio>
+<audio id="finalSnd" src="success.mp3"></audio>
+
+<div class="container">
+
+<div id="page0" class="page active">
+<h1>Suno Yaar... 🤫</h1>
+<div class="gif-box"><img src="cat1.gif"></div>
+<p>Ek bahut zaroori baat karni hai, ready ho?</p>
+<button onclick="startApp()">Haan, Raedy Hun! 😏❤️</button>
+</div>
+
+<div id="page1" class="page">
+<h1>Sun na... 👉👈</h1>
+<div class="gif-box"><img src="cat2.gif"></div>
+<p>Duniya mein sabse pyaari aur dildar Best Friend kaun hai Pata Hai Tujhe? Tu hi hai Yaar 🥹😭!</p>
+<button onclick="moveNext(2)">Haa Haa Main hi hun 😌💅🏻 Chal Maska Mat Laga Kaam Ky h vo bol ? 😏</button>
+</div>
+
+<div id="page2" class="page">
+<h1>Ek Choti Si Help.....😓🙏🏻</h1>
+<div class="gif-box"><img src="cat3.gif"></div>
+<p>Tere is gareeb dost ka wallet khali ho gaya hai... 😭🕸️ Tohh Main Kehh Raha Tha.....</p>
+<button onclick="moveNext(3)"> Haa Haa Kitne chahiye bol? 😂</button>
+</div>
+
+<div id="page3" class="page">
+<h1 style="color:#ff4d6d;">Jayda Nahi... 🥲</h1>
+<div class="gif-box"><img src="cat4.gif"></div>
+<p>Bas <b>₹500 - ₹600</b> bhej de... Agle janam mein pakka wapas kar dunga! 😭🙏</p>
+<button class="danger" onclick="moveNext(4)">Arey Chal Chal thik hai, QR de!😼💅🏻</button>
+<button id="runBtn" onmouseover="moveButton()">Main Nahi Kar Rahi Ja Ky Kar Lega ? 😏💅</button>
+</div>
+
+<div id="page5" class="page">
+<h1 style="color:red;">Itni Ziddi?? 😭</h1>
+<div class="gif-box"><img src="cat3.gif"></div>
+<p>Achha theek hai... last request....  
+Bas bhej Yaar Pleaseeee 😭🙏</p>
+<button class="danger" onclick="moveNext(4)">Chal Chal theek hai Itna Bol Raha Hai Toh Bhej Deti Hoon Bhej QR 😼💅🏻</button>
+</div>
+
+<div id="page4" class="page">
+<h1 style="color:#ff4d6d;">AREY AREY LOVE YOU SOO MUCHH YAAR! 🥹🫂💓</h1>
+<div class="qr-frame"><img src="qr.png"></div>
+<p>Chal Jaldi Se G-Pay karde! Tera ehsaan kabhi nahi bhoolunga. 🕺</p>
+<button class="danger" onclick="location.reload()">Haa Haa Check Kr...Kar Diya 😂💅</button>
+</div>
+
+</div>
+
+<script>
+const clickSnd=document.getElementById("clickSnd");
+const finalSnd=document.getElementById("finalSnd");
+const bgMusic=document.getElementById("bgMusic");
+
+function playSound(sound){
+sound.currentTime=0;
+sound.play();
+}
+
+function startApp(){
+bgMusic.play();
+playSound(clickSnd);
+moveNext(1);
+}
+
+function moveNext(num){
+
+playSound(clickSnd);
+
+document.body.style.background=
+num>=3 ? "#fff0f3" :
+"linear-gradient(135deg,#f3e5f5,#ffffff)";
+
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById("page"+num).classList.add("active");
+
+if(num===4){
+playSound(finalSnd);
+
+confetti({
+particleCount:200,
+spread:100,
+origin:{y:0.6}
+});
+}
+}
+
+function moveButton(){
+let btn=document.getElementById("runBtn");
+let x=Math.random()*200-100;
+let y=Math.random()*200-100;
+btn.style.transform=`translate(${x}px,${y}px)`;
+btn.onclick=function(){ moveNext(5); }
+}
+</script>
+
+</body>
+</html>
